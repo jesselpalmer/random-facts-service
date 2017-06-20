@@ -1,3 +1,3 @@
-# Random Fact API
+# Random APIs
 
-An API to get random facts
+A set of APIs to get random thoughts, quotes, facts, greetings, etc
