@@ -7,8 +7,9 @@ import (
 )
 
 type RandomData struct {
-	data     string
-	resource string
+	Data     string
+	Resource string
+	Type     string
 }
 
 func index(w http.ResponseWriter, r *http.Request) {
@@ -24,8 +25,9 @@ func factsData(w http.ResponseWriter, r *http.Request) {
 	w.Header().Set("Content-Type", "application/json")
 	w.WriteHeader(http.StatusOK)
 
-	u := RandomData{data: "The Unicorn is the national animal of Scotland",
-		resource: "http://www.scotsman.com/heritage/people-places/scottish-fact-of-the-week-scotland-s-official-animal-the-unicorn-1-2564399"}
+	u := RandomData{Data: "The Unicorn is the national animal of Scotland",
+		Resource: "http://www.scotsman.com/heritage/people-places/scottish-fact-of-the-week-scotland-s-official-animal-the-unicorn-1-2564399",
+		Type:     "fact"}
 
 	json.NewEncoder(w).Encode(u)
 }
