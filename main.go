@@ -4,6 +4,7 @@ import (
 	"encoding/json"
 	"fmt"
 	"net/http"
+
 	"github.com/jesselpalmer/random-apis/models/randomdata"
 )
 
@@ -27,6 +28,10 @@ func factsData(w http.ResponseWriter, r *http.Request) {
 	json.NewEncoder(w).Encode(u)
 }
 
+func greetings(w http.ResponseWriter, r *http.Request) {
+	fmt.Fprintf(w, "%s", "Random Greeting Generator")
+}
+
 func thoughts(w http.ResponseWriter, r *http.Request) {
 	fmt.Fprintf(w, "%s", "Random Thought Generator")
 }
@@ -35,6 +40,7 @@ func main() {
 	http.HandleFunc("/", index)
 	http.HandleFunc("/facts", facts)
 	http.HandleFunc("/facts/", factsData)
+	http.HandleFunc("/greetings", greetings)
 	http.HandleFunc("/thoughts", thoughts)
 	http.ListenAndServe(":8080", nil)
 }
