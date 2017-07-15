@@ -4,16 +4,11 @@ import (
 	"encoding/json"
 	"fmt"
 	"net/http"
+	"github.com/jesselpalmer/random-apis/models/randomdata"
 )
 
-type RandomData struct {
-	Data     string
-	Resource string
-	Type     string
-}
-
 func index(w http.ResponseWriter, r *http.Request) {
-	var welcomeMessage = "Welcome to the Random APIs!"
+	welcomeMessage := "Welcome to the Random APIs!"
 	fmt.Fprintf(w, "%s", welcomeMessage)
 }
 
@@ -25,7 +20,7 @@ func factsData(w http.ResponseWriter, r *http.Request) {
 	w.Header().Set("Content-Type", "application/json")
 	w.WriteHeader(http.StatusOK)
 
-	u := RandomData{Data: "The Unicorn is the national animal of Scotland",
+	u := randomdata.RandomData{Data: "The Unicorn is the national animal of Scotland",
 		Resource: "http://www.scotsman.com/heritage/people-places/scottish-fact-of-the-week-scotland-s-official-animal-the-unicorn-1-2564399",
 		Type:     "fact"}
 
