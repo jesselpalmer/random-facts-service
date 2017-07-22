@@ -4,7 +4,7 @@ import (
 	"fmt"
 	"net/http"
 
-	"github.com/jesselpalmer/routes"
+	"github.com/jesselpalmer/random-apis/routes"
 )
 
 func index(w http.ResponseWriter, r *http.Request) {
