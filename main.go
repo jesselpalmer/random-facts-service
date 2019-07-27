@@ -18,5 +18,6 @@ func main() {
 	http.HandleFunc("/facts/", routes.FactsData)
 	http.HandleFunc("/greetings", routes.Greetings)
 	http.HandleFunc("/thoughts", routes.Thoughts)
+	fmt.Println("Listening on port 8080...")
 	http.ListenAndServe(":8080", nil)
 }
