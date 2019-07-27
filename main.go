@@ -3,20 +3,19 @@ package main
 import (
 	"fmt"
 	"net/http"
-	"os"
+	"log"
 
 	"github.com/jesselpalmer/random-facts-api/routes"
 )
 
+
 func main() {
-
-	port := os.Getenv("PORT")
-
-	if port == "" {
-		port = "8080"
-		fmt.Println("INFO: No PORT environment variable detected, defaulting to " + port)
-	}
-
 	http.HandleFunc("/", routes.Facts)
-	http.ListenAndServe(":"+port, nil)
+	http.HandleFunc("/_ah/health", healthCheckHandler)
+	log.Print("Listening on port 8080")
+	log.Fatal(http.ListenAndServe(":8080", nil))
+}
+
+func healthCheckHandler(w http.ResponseWriter, r *http.Request) {
+	fmt.Fprint(w, "ok")
 }
