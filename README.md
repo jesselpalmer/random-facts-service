@@ -1,3 +1,3 @@
-# Random APIs
+# Random Facts API
 
-A set of APIs to get random thoughts, quotes, facts, greetings, etc
+An API that generates random facts. Go to [https://random-facts-api.appspot.com/]([https://random-facts-api.appspot.com/]) to checkout out available facts.
