@@ -1,1 +1,0 @@
-web: random-facts-api
