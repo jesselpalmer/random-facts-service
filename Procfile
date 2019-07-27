@@ -1,1 +1,1 @@
-web: bin/random-facts-api
+web: random-facts-api
