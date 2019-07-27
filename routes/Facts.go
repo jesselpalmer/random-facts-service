@@ -1,11 +1,20 @@
 package routes
 
 import (
-	"fmt"
+	"encoding/json"
 	"net/http"
+
+	"github.com/jesselpalmer/random-facts-api/models/fact"
 )
 
-// Facts : facts route
+// Facts : facts data route
 func Facts(w http.ResponseWriter, r *http.Request) {
-	fmt.Fprintf(w, "%s", "Random Fact Generator")
+	w.Header().Set("Content-Type", "application/json")
+	w.WriteHeader(http.StatusOK)
+
+	u := fact.Fact{Data: "The Unicorn is the national animal of Scotland",
+		Resource: "http://www.scotsman.com/heritage/people-places/scottish-fact-of-the-week-scotland-s-official-animal-the-unicorn-1-2564399",
+		Type:     "fact"}
+
+	json.NewEncoder(w).Encode(u)
 }
