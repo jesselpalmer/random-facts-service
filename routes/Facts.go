@@ -13,8 +13,7 @@ func Facts(w http.ResponseWriter, r *http.Request) {
 	w.WriteHeader(http.StatusOK)
 
 	u := fact.Fact{Data: "The Unicorn is the national animal of Scotland",
-		Resource: "http://www.scotsman.com/heritage/people-places/scottish-fact-of-the-week-scotland-s-official-animal-the-unicorn-1-2564399",
-		Type:     "fact"}
+		Source: "http://www.scotsman.com/heritage/people-places/scottish-fact-of-the-week-scotland-s-official-animal-the-unicorn-1-2564399"}
 
 	json.NewEncoder(w).Encode(u)
 }

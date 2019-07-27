@@ -2,7 +2,6 @@ package fact
 
 // Fact : stores random data
 type Fact struct {
-	Data     string
-	Resource string
-	Type     string
+	Data   string
+	Source string
 }
