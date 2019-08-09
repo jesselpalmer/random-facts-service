@@ -2,12 +2,11 @@ package main
 
 import (
 	"fmt"
-	"net/http"
 	"log"
+	"net/http"
 
 	"github.com/jesselpalmer/random-facts-api/routes"
 )
-
 
 func main() {
 	http.HandleFunc("/", routes.Facts)
