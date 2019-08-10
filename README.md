@@ -1,3 +1,3 @@
-# Random Facts API
+# Random Facts Service
 
-An API that generates random facts.
+An Service that generates random facts.

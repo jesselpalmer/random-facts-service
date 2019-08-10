@@ -4,7 +4,7 @@ import (
 	"encoding/json"
 	"net/http"
 
-	"github.com/jesselpalmer/random-facts-api/models/fact"
+	"github.com/jesselpalmer/random-facts-service/models/fact"
 )
 
 // Facts : facts data route

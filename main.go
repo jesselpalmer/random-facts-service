@@ -5,7 +5,7 @@ import (
 	"log"
 	"net/http"
 
-	"github.com/jesselpalmer/random-facts-api/routes"
+	"github.com/jesselpalmer/random-facts-service/routes"
 )
 
 func main() {
