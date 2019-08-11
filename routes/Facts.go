@@ -16,6 +16,20 @@ var randomFact = fact.Fact{
 	Source: "http://www.scotsman.com/heritage/people-places/scottish-fact-of-the-week-scotland-s-official-animal-the-unicorn-1-2564399",
 }
 
+func getFactsLocally(r *http.Request) fact.Fact {
+	log.Printf("getting facts locally")
+
+	return randomFact
+}
+
+func getUnmarshaledFact(factItem *memcache.Item) fact.Fact {
+	log.Printf("memcache hit %s", factItem.Value)
+	var fact fact.Fact
+	json.Unmarshal(factItem.Value, &fact)
+
+	return fact
+}
+
 func cacheFacts(r *http.Request) fact.Fact {
 	log.Printf("caching facts")
 
@@ -23,12 +37,12 @@ func cacheFacts(r *http.Request) fact.Fact {
 
 	bytes, err := json.Marshal(randomFact)
 
-	item1 := &memcache.Item{
+	newFactItem := &memcache.Item{
 		Key:   "facts",
 		Value: []byte(bytes),
 	}
 
-	if err := memcache.Set(ctx, item1); err != nil {
+	if err := memcache.Set(ctx, newFactItem); err != nil {
 		log.Printf("error: could not cache facts")
 		u := getFactsLocally(r)
 		return u
@@ -36,16 +50,14 @@ func cacheFacts(r *http.Request) fact.Fact {
 
 	log.Printf("facts cached")
 
-	item0, err := memcache.Get(ctx, "facts")
+	newCachedFactItem, err := memcache.Get(ctx, "facts")
 
 	if err == nil {
-		log.Printf("memcache hit %s", item0.Value)
-		var fact fact.Fact
-		json.Unmarshal(item0.Value, &fact)
-		return fact
+		return getUnmarshaledFact(newCachedFactItem)
 	}
 
 	log.Printf("error: try again later")
+
 	return fact.Fact{}
 }
 
@@ -55,21 +67,13 @@ func getFactsFromCache(r *http.Request) fact.Fact {
 	item0, err := memcache.Get(ctx, "facts")
 
 	if err == nil {
-		log.Printf("memcache hit %s", item0.Value)
-		var fact fact.Fact
-		json.Unmarshal(item0.Value, &fact)
-		return fact
+		return getUnmarshaledFact(item0)
 	}
 
 	log.Printf("error: memcache miss")
 	u := cacheFacts(r)
 
 	return u
-}
-
-func getFactsLocally(r *http.Request) fact.Fact {
-	log.Printf("getting facts locally")
-	return randomFact
 }
 
 // Facts : facts data route
