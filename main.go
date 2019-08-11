@@ -7,11 +7,16 @@ import (
 	"os"
 
 	"github.com/jesselpalmer/random-facts-service/routes"
+	"google.golang.org/appengine"
 )
 
 func main() {
 	http.HandleFunc("/", indexHandler)
 	http.HandleFunc("/status", statusHandler)
+
+	if appengine.IsAppEngine() {
+		appengine.Main()
+	}
 
 	port := os.Getenv("PORT")
 	if port == "" {
