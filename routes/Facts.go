@@ -5,18 +5,27 @@ import (
 	"log"
 	"net/http"
 
+	"github.com/jesselpalmer/random-facts-service/models/fact"
 	"google.golang.org/appengine"
 	"google.golang.org/appengine/memcache"
 )
 
-func cacheFacts(r *http.Request) string {
+var randomFact = fact.Fact{
+	Id:     0,
+	Fact:   "The Unicorn is the national animal of Scotland",
+	Source: "http://www.scotsman.com/heritage/people-places/scottish-fact-of-the-week-scotland-s-official-animal-the-unicorn-1-2564399",
+}
+
+func cacheFacts(r *http.Request) fact.Fact {
 	log.Printf("caching facts")
 
 	ctx := appengine.NewContext(r)
 
+	bytes, err := json.Marshal(randomFact)
+
 	item1 := &memcache.Item{
 		Key:   "facts",
-		Value: []byte("The Unicorn is the national animal of Scotland"),
+		Value: []byte(bytes),
 	}
 
 	if err := memcache.Set(ctx, item1); err != nil {
@@ -24,29 +33,32 @@ func cacheFacts(r *http.Request) string {
 		u := getFactsLocally(r)
 		return u
 	}
-	
+
 	log.Printf("facts cached")
 
 	item0, err := memcache.Get(ctx, "facts")
 
 	if err == nil {
 		log.Printf("memcache hit %s", item0.Value)
-		u := string(item0.Value)
-		return u
+		var fact fact.Fact
+		json.Unmarshal(item0.Value, &fact)
+		return fact
 	}
 
-	return "error: try again later"
+	log.Printf("error: try again later")
+	return fact.Fact{}
 }
 
-func getFactsFromCache(r *http.Request) string {
+func getFactsFromCache(r *http.Request) fact.Fact {
 	ctx := appengine.NewContext(r)
 
 	item0, err := memcache.Get(ctx, "facts")
 
 	if err == nil {
 		log.Printf("memcache hit %s", item0.Value)
-		u := string(item0.Value)
-		return u
+		var fact fact.Fact
+		json.Unmarshal(item0.Value, &fact)
+		return fact
 	}
 
 	log.Printf("error: memcache miss")
@@ -55,9 +67,9 @@ func getFactsFromCache(r *http.Request) string {
 	return u
 }
 
-func getFactsLocally(r *http.Request) string {
+func getFactsLocally(r *http.Request) fact.Fact {
 	log.Printf("getting facts locally")
-	return "The Unicorn is the national animal of Scotland"
+	return randomFact
 }
 
 // Facts : facts data route
