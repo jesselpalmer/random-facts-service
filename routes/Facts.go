@@ -64,10 +64,10 @@ func cacheFacts(r *http.Request) fact.Fact {
 func getFactsFromCache(r *http.Request) fact.Fact {
 	ctx := appengine.NewContext(r)
 
-	item0, err := memcache.Get(ctx, "facts")
+	factItem, err := memcache.Get(ctx, "facts")
 
 	if err == nil {
-		return getUnmarshaledFact(item0)
+		return getUnmarshaledFact(factItem)
 	}
 
 	log.Printf("error: memcache miss")
